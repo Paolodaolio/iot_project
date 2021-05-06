@@ -1,9 +1,11 @@
 #include "foo.h"
-
+#include "Timer.h"
 /**
-* Implementation of Challenge #5 
-* by Paolo Daolio 
-* and Fabrizio Siciliano
+ * Implementation of Challenge #5
+ * 
+ * @author Paolo Daolio
+ * @author Fabrizio Siciliano
+ * @date   May 6 2021 
 */
 
 module RadioLEDs @safe() {
@@ -22,9 +24,6 @@ implementation {
 	message_t packet;
 	bool locked;
 	uint16_t counter = 0;
-	// TODO: this must be initialized in some way
-	// Note to self: neighbor discovery??
-	uint16_t id = 0;
 
 	event void Boot.booted() {
 		call AMControl.start();
@@ -32,21 +31,19 @@ implementation {
 
 	event void AMControl.startDone(error_t err) {
 	    if (err == SUCCESS) {
-	    	// The timer should be parametrized from somewhere
-	    	// Note to self: neighbor discovery??
-	    	switch(id % 3){
+	    	switch(TOS_NODE_ID % 3){
 	    		case 0:
-	    			call MilliTimer.startPeriodic(); // 1 Hz
+	    			call MilliTimer.startPeriodic(1000); // 1 Hz
     				break;
 				case 1:
-					call MilliTimer.startPeriodic(); // 3 Hz
+					call MilliTimer.startPeriodic(333); // 3 Hz
     				break;
 				case 2:
-					call MilliTimer.startPeriodic(); // 5 Hz
+					call MilliTimer.startPeriodic(200); // 5 Hz
     				break;
 				default:
 					// Never reached
-					dbg("FooC", "FooC: start done, but id is not in range 0-2. Id: %hu.\n", id);
+					dbg("FooC", "FooC: start done, but TOS_NODE_ID is not in range 0-2. Id: %hu.\n", TOS_NODE_ID);
 					break;
 	    	}
 	    }
@@ -73,9 +70,9 @@ implementation {
 		}
 
 		msg->counter = counter;
-		msg->senderId = id;
+		msg->senderId = TOS_NODE_ID;
 		if(call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_msg)) == SUCCESS) {
-			dbg("FooC", "FooC: packet from mote %hu sent with counter %hu.\n", id, counter);	
+			dbg("FooC", "FooC: packet from mote %hu sent with counter %hu.\n", TOS_NODE_ID, counter);	
 			counter++;
 			locked = TRUE;
 		}
@@ -89,6 +86,27 @@ implementation {
 
 		// Here we can turn on/off the leds
 
+		if(rmsg->counter % 10 == 0) {
+			// turn off all LEDs
+		} else {
+			switch(rmsg->senderId) {
+				case 0:
+					// toggle LED0
+					call Leds.led0Toggle();
+					break;
+				case 1:
+					// toggle LED1
+					call Leds.led1Toggle();
+					break;
+				case 2:
+					// toggle LED2
+					call Leds.led2Toggle();
+					break;
+				default:
+					// all other senders must be ignored
+					break;
+			}
+		}
 		return bufPtr;
 	}
 
