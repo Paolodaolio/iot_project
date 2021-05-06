@@ -95,9 +95,7 @@ implementation {
 				call Leds.led0Off();
 				call Leds.led1Off();
 				call Leds.led2Off();
-				led0=0;
-				led1=0;
-				led2=0;
+				led0 = led1= led2 = 0;
 				// turn off all LEDs
 			} else {
 				switch(rmsg->senderId) {
