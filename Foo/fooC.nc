@@ -87,6 +87,9 @@ implementation {
 		// Here we can turn on/off the leds
 
 		if(rmsg->counter % 10 == 0) {
+			call Leds.led0off();
+			call Leds.led1off();
+			call Leds.led2off();
 			// turn off all LEDs
 		} else {
 			switch(rmsg->senderId) {
