@@ -1,5 +1,7 @@
-#include "Foo.h"
+#define NEW_PRINTF_SEMANTICS
 
+#include "Foo.h"
+#include "printf.h"
 /**
  * Implementation of Challenge #5
  * 
@@ -17,6 +19,8 @@ implementation {
     components new AMSenderC(AM_RADIO_COUNT_MSG);
     components new AMReceiverC(AM_RADIO_COUNT_MSG);
     components new TimerMilliC();
+    components PrintfC;
+    components SerialStartC;
     components ActiveMessageC;
     
     App.Boot -> MainC.Boot;

@@ -1,3 +1,4 @@
+#include "printf.h"
 #include "Foo.h"
 #include "Timer.h"
 /**
@@ -111,6 +112,10 @@ implementation {
 				}
 			}
 		}
+		printf("%u", call Leds.get() & 0x4);
+		printf("%u", call Leds.get() & 0x2);
+		printf("%u\n", call Leds.get() & 0x1);
+		printfflush();
 		counter++;
 		return bufPtr;
 	}
