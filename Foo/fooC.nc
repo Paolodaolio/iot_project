@@ -31,14 +31,14 @@ implementation {
 
 	event void AMControl.startDone(error_t err) {
 	    if (err == SUCCESS) {
-	    	switch(TOS_NODE_ID % 3){
-	    		case 0:
+	    	switch(TOS_NODE_ID){
+	    		case 1:
 	    			call MilliTimer.startPeriodic(1000); // 1 Hz
     				break;
-				case 1:
+				case 2:
 					call MilliTimer.startPeriodic(333); // 3 Hz
     				break;
-				case 2:
+				case 3:
 					call MilliTimer.startPeriodic(200); // 5 Hz
     				break;
 				default:
@@ -90,15 +90,15 @@ implementation {
 			// turn off all LEDs
 		} else {
 			switch(rmsg->senderId) {
-				case 0:
+				case 1:
 					// toggle LED0
 					call Leds.led0Toggle();
 					break;
-				case 1:
+				case 2:
 					// toggle LED1
 					call Leds.led1Toggle();
 					break;
-				case 2:
+				case 3:
 					// toggle LED2
 					call Leds.led2Toggle();
 					break;
