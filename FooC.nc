@@ -125,7 +125,7 @@ implementation {
 		/*printf("%u", call Leds.get() & 0x4);
 		printf("%u", call Leds.get() & 0x2);
 		printf("%u\n", call Leds.get() & 0x1);*/
-		printf("%u%u%u", led0,led1,led2);
+		printf("%u%u%u", led2,led1,led0);
 		printfflush();
 		counter++;
 		return bufPtr;
