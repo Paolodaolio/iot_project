@@ -1,4 +1,4 @@
-#include "foo.h"
+#include "Foo.h"
 #include "Timer.h"
 /**
  * Implementation of Challenge #5
@@ -8,7 +8,7 @@
  * @date   May 6 2021 
 */
 
-module RadioLEDs @safe() {
+module FooC @safe() {
 	uses {
 		interface Leds;
 		interface Boot;
@@ -63,15 +63,15 @@ implementation {
 			return;
 		}
 
-		radio_msg* rmsg = (radio_msg*)call Packet.getPayload(&packet, sizeof(radio_msg));
-		if(msg == NULL) {
+		radio_msg_t* rmsg = (radio_msg_t*)call Packet.getPayload(&packet, sizeof(radio_msg_t));
+		if(rmsg == NULL) {
 			// Couldn't find anything in the payload.
 			return;
 		}
 
-		msg->counter = counter;
-		msg->senderId = TOS_NODE_ID;
-		if(call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_msg)) == SUCCESS) {
+		rmsg->counter = counter;
+		rmsg->senderId = TOS_NODE_ID;
+		if(call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_msg_t)) == SUCCESS) {
 			dbg("FooC", "FooC: packet from mote %hu sent with counter %hu.\n", TOS_NODE_ID, counter);	
 			counter++;
 			locked = TRUE;
@@ -80,16 +80,16 @@ implementation {
 
 	event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
 		dbg("FooC", "Received packet of length %hhu.\n", len);
-		if(len != sizeof(radio_msg)) { return bufPtr; }
+		if(len != sizeof(radio_msg_t)) { return bufPtr; }
 
-		radio_msg* rmsg = (radio_msg*)payload;
+		radio_msg_t* rmsg = (radio_msg_t*)payload;
 
 		// Here we can turn on/off the leds
 
 		if(rmsg->counter % 10 == 0) {
-			call Leds.led0off();
-			call Leds.led1off();
-			call Leds.led2off();
+			call Leds.led0Off();
+			call Leds.led1Off();
+			call Leds.led2Off();
 			// turn off all LEDs
 		} else {
 			switch(rmsg->senderId) {
@@ -113,7 +113,7 @@ implementation {
 		return bufPtr;
 	}
 
-	event void AMSend.sendDone(radio_msg* bufPtr, error_t error) {
+	event void AMSend.sendDone(message_t* bufPtr, error_t error) {
 		if(&packet == bufPtr) {
 			locked = FALSE;
 		}

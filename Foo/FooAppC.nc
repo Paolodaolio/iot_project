@@ -1,4 +1,4 @@
-#include "foo.h"
+#include "Foo.h"
 
 /**
  * Implementation of Challenge #5
@@ -17,6 +17,7 @@ implementation {
     components new AMSenderC(AM_RADIO_COUNT_MSG);
     components new AMReceiverC(AM_RADIO_COUNT_MSG);
     components new TimerMilliC();
+    components ActiveMessageC;
     
     App.Boot -> MainC.Boot;
 
