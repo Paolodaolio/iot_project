@@ -25,6 +25,10 @@ implementation {
 	message_t packet;
 	bool locked;
 	uint16_t counter = 0;
+	uint16_t led0 = 0;
+	uint16_t led1 = 0;
+	uint16_t led2 = 0;
+	
 
 	event void Boot.booted() {
 		call AMControl.start();
@@ -91,20 +95,24 @@ implementation {
 				call Leds.led0Off();
 				call Leds.led1Off();
 				call Leds.led2Off();
+				led0 = led1= led2 = 0;
 				// turn off all LEDs
 			} else {
 				switch(rmsg->senderId) {
 					case 1:
 						// toggle LED0
 						call Leds.led0Toggle();
+						led0 = !led0;
 						break;
 					case 2:
 						// toggle LED1
 						call Leds.led1Toggle();
+						led1 = !led1;
 						break;
 					case 3:
 						// toggle LED2
 						call Leds.led2Toggle();
+						led2 = !led2;
 						break;
 					default:
 						// all other senders must be ignored
@@ -112,9 +120,10 @@ implementation {
 				}
 			}
 		}
-		printf("%u", call Leds.get() & 0x4);
+		/*printf("%u", call Leds.get() & 0x4);
 		printf("%u", call Leds.get() & 0x2);
-		printf("%u\n", call Leds.get() & 0x1);
+		printf("%u\n", call Leds.get() & 0x1);*/
+		printf("%u%u%u", led2,led1,led0);
 		printfflush();
 		counter++;
 		return bufPtr;
