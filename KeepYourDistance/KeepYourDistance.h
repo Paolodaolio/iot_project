@@ -6,7 +6,7 @@ typedef nx_struct allert_msg{
 } allert_msg_t;
 
 typedef nx_struct node{
-    //nx_uint8_t id; 					// sender id
+    nx_uint8_t id; 					// sender id
 	nx_uint8_t counter; 			// counter related to the id-mote
 	nx_uint32_t timestamp;			// timestamp of the received msg
 } node_t;
