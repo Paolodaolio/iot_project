@@ -3,6 +3,7 @@
 
 typedef nx_struct allert_msg{
 	nx_uint8_t senderId;
+	nx_uint8_t msgCount;
 } allert_msg_t;
 
 typedef nx_struct node{
@@ -14,6 +15,6 @@ typedef nx_struct node{
 enum {
   AM_RADIO_COUNT_MSG = 6,
   MOTES = 5,
-  THRESHOLD = 750,
+  THRESHOLD = 1000,
 };
 #endif

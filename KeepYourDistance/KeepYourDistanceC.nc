@@ -24,6 +24,7 @@ module KeepYourDistanceC @safe() {
 implementation {
 	node_t motes[MOTES];
 	message_t packet;
+	nx_uint8_t msgCount;
 	
 	nx_uint16_t findElement(nx_uint8_t id) {
 		nx_uint16_t i;
@@ -49,6 +50,7 @@ implementation {
 			motes[i].counter = 0;
 			motes[i].timestamp = 0;
 		}
+		msgCount = 0;
 		call AMControl.start();
 	}
 	
@@ -61,8 +63,7 @@ implementation {
 	    }
 	}
 
-	event void AMControl.stopDone(error_t error) {
-	}
+	event void AMControl.stopDone(error_t error) {}
 
 
 	event void MilliTimer.fired() {
@@ -71,6 +72,8 @@ implementation {
 				return;
 			}
 			amsg->senderId = TOS_NODE_ID;
+			amsg->msgCount = msgCount;
+			msgCount++;
 			if(call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(allert_msg_t)) == SUCCESS) {
 				printf("KYD: packet from mote %u sent\n", TOS_NODE_ID);
 				printfflush();
@@ -100,7 +103,7 @@ implementation {
 				printfflush();
 				}
 			else{
-				if(call LocalTime.get() - motes[savedIndex].timestamp < THRESHOLD){
+				if((motes[firstAvlIndex].counter == amsg->msgCount + 1) && (call LocalTime.get() - motes[savedIndex].timestamp <= THRESHOLD)){ 
 					motes[savedIndex].counter++; 
 					printf("MOTE %u increased counter of %u to %u\n", TOS_NODE_ID, amsg-> senderId, motes[savedIndex].counter);
 					printfflush();
