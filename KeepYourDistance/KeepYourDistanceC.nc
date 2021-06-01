@@ -98,12 +98,13 @@ implementation {
 				firstAvlIndex = findFirstAvl();
 				motes[firstAvlIndex].timestamp = ts;
 				motes[firstAvlIndex].counter = 1;
+				motes[firstAvlIndex].msgCount = amsg->msgCount;
 				motes[firstAvlIndex].id = amsg->senderId;
 				printf("[MOTE#%u]: INIT index %u\n", TOS_NODE_ID, firstAvlIndex);
 				printfflush();
 				}
 			else{
-				if((motes[firstAvlIndex].counter == amsg->msgCount + 1) && (call LocalTime.get() - motes[savedIndex].timestamp <= THRESHOLD)){ 
+				if((motes[firstAvlIndex].msgCount == (amsg->msgCount + 1) % 256) && (call LocalTime.get() - motes[savedIndex].timestamp <= THRESHOLD)){ 
 					motes[savedIndex].counter++; 
 					printf("MOTE %u increased counter of %u to %u\n", TOS_NODE_ID, amsg-> senderId, motes[savedIndex].counter);
 					printfflush();
@@ -113,6 +114,7 @@ implementation {
 					printf("MOTE %u reset counter of %u to 1\n", TOS_NODE_ID, amsg-> senderId);
 				}
 				motes[savedIndex].timestamp = ts;
+				motes[savedIndex].msgCount = amsg->msgCount;
 			}
 			
 			if (motes[savedIndex].counter >= 10){
