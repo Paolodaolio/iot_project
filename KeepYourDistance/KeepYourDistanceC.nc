@@ -81,16 +81,18 @@ implementation {
 		}
 
 	event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-		nx_uint32_t ts;
-		nx_uint16_t savedIndex, firstAvlIndex;
+		//nx_uint32_t ts;
+		//nx_uint16_t savedIndex, firstAvlIndex;
 		if(len != sizeof(allert_msg_t)) { 
 			printf("[MOTE#%u]: received packet length not valid!\n",TOS_NODE_ID);
 			printfflush();
 			return bufPtr; 
 		} else {
 			allert_msg_t* amsg = (allert_msg_t*)payload;
-			ts = call LocalTime.get();
-			savedIndex = findElement(amsg->senderId);
+			//ts = call LocalTime.get();
+			printf("MOTE# %u met MOTE# %u at time %u with counter %u\n",TOS_NODE_ID,amsg->senderId, call LocalTime.get(), amsg->msgCount);
+			printfflush();
+			/*savedIndex = findElement(amsg->senderId);
 			printf("[MOTE#%u]: Index found is: %u\n",TOS_NODE_ID, savedIndex);
 			printfflush();
 			if (savedIndex == MOTES + 1){  
@@ -121,7 +123,7 @@ implementation {
 				printf("MOTE#%u exceed counter with MOTE#%u \n",TOS_NODE_ID,amsg->senderId);
 				printfflush();
 			
-			}
+			}*/
 		
 		} 
 		return bufPtr;
