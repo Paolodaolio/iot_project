@@ -28,7 +28,7 @@ implementation {
     App.Boot -> MainC.Boot;
     App.LocalTime -> LocalTimeMilliC;
     App.Receive -> AMReceiverC;
-    App.AMSend -> AMSenderC;
+    //App.TimeSyncAMSend -> AMSenderC;
     App.AMControl -> ActiveMessageC;
     App.MilliTimer -> TimerMilliC;
     App.Packet -> AMSenderC;

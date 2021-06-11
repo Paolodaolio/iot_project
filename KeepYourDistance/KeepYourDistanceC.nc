@@ -14,7 +14,8 @@ module KeepYourDistanceC @safe() {
 		interface Boot;
 		interface Receive;
 		interface Timer<TMilli> as MilliTimer;
-		interface AMSend;
+		//interface AMSend;
+		interface TimeSyncAMSend<TMilli, nx_uint32_t>;
 		interface SplitControl as AMControl;
 		interface Packet;
 		interface LocalTime<TMilli>;
@@ -74,7 +75,7 @@ implementation {
 			amsg->senderId = TOS_NODE_ID;
 			amsg->msgCount = msgCount;
 			msgCount++;
-			if(call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(allert_msg_t)) == SUCCESS) {
+			if(call TimeSyncAMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(allert_msg_t), call LocalTime.get()) == SUCCESS) {
 				printf("KYD: packet from mote %u sent\n", TOS_NODE_ID);
 				printfflush();
 			}
@@ -129,7 +130,7 @@ implementation {
 		return bufPtr;
 	}
 
-	event void AMSend.sendDone(message_t* bufPtr, error_t error) {
+	event void TimeSyncAMSend.sendDone(message_t* bufPtr, error_t error) {
 		// do nothing
 	}
 	
