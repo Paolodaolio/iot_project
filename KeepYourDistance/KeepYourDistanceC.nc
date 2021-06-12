@@ -91,6 +91,8 @@ implementation {
 		} else {
 			allert_msg_t* amsg = (allert_msg_t*)payload;
 			//ts = call LocalTime.get();
+			// qua secondo me dobbiamo usare isValid() per checkare se la ts è giusta
+			// if isValid(bufPtr){}
 			printf("MOTE# %u met MOTE# %u at time %u with counter %u\n",TOS_NODE_ID,amsg->senderId, call LocalTime.get(), amsg->msgCount);
 			printfflush();
 			/*savedIndex = findElement(amsg->senderId);
