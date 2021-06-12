@@ -15,7 +15,7 @@ configuration KeepYourDistanceAppC {
 }
 
 implementation {
-    components MainC;//		 as App;
+    components MainC;
     components LocalTimeMilliC;
     components KeepYourDistanceC as App;
     components new AMSenderC(AM_RADIO_COUNT_MSG);
@@ -28,7 +28,7 @@ implementation {
     App.Boot -> MainC.Boot;
     App.LocalTime -> LocalTimeMilliC;
     App.Receive -> AMReceiverC;
-    //App.TimeSyncAMSend -> AMSenderC;
+    App.AMSend -> AMSenderC;
     App.AMControl -> ActiveMessageC;
     App.MilliTimer -> TimerMilliC;
     App.Packet -> AMSenderC;
