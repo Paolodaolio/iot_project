@@ -25,7 +25,7 @@ module KeepYourDistanceC @safe() {
 implementation {
 
 	message_t packet;
-	nx_uint32_t msgCount;	
+	nx_uint8_t msgCount;	
 	
 	event void Boot.booted() {
 		msgCount = 0;

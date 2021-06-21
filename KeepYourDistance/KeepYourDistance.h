@@ -3,7 +3,7 @@
 
 typedef nx_struct allert_msg{
 	nx_uint8_t senderId;
-	nx_uint32_t msgCount;
+	nx_uint8_t msgCount;
 } allert_msg_t;
 
 enum {
